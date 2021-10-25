@@ -32,22 +32,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
         http.authorizeRequests()
                 // 登录才能访问的功能
                 .antMatchers(
-                        "/user/setting",
-                        "/user/upload",
-                        "/discuss/add",
-                        "/comment/add/**",
-                        "/letter/**",
-                        "/notice/**",
-                        "/like",
-                        "/follow",
-                        "/unfollow"
+                        "/user/setting", // 用户设置
+                        "/user/upload", // 用户上传头像
+                        "/discuss/add", // 用户发布帖子
+                        "/comment/add/**", // 评论
+                        "/letter/**", // 私信
+                        "/notice/**", // 查看通知
+                        "/like", // 点赞
+                        "/follow", // 关注
+                        "/unfollow" // 取消关注
                         )
                 // 设置访问的用户权限, 用户,管理员,版主都能访问
                 .hasAnyAuthority(
-                        AUTHORITY_USER,
-                        AUTHORITY_ADMIN,
-                        AUTHORITY_MODERATOR
+                        AUTHORITY_USER, // 普通用户
+                        AUTHORITY_ADMIN, // 管理员
+                        AUTHORITY_MODERATOR // 版主
                     )
+                // 版主能进行加精,置顶
+                .antMatchers(
+                        "/discuss/top", // 置顶
+                        "/discuss/wonderful" // 加精
+                )
+                .hasAnyAuthority(
+                    AUTHORITY_MODERATOR
+                )
+                // 管理员能删除帖子
+                .antMatchers(
+                        "/discuss/delete",
+                        "/data/**"
+                )
+                .hasAnyAuthority(
+                        AUTHORITY_ADMIN
+                )
                 // 其他请求都能访问
                 .anyRequest().permitAll()
                 // 关闭csrf检查

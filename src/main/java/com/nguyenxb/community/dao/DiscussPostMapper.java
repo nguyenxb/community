@@ -20,4 +20,10 @@ public interface DiscussPostMapper {
     DiscussPost selectDiscussPostById(int id);
 
     int updateCommentCount(int id , int commentCount);
+
+    // 帖子 置顶,
+    int updateType (int id,int type);
+    // 帖子加精,
+    int updateStatus(int id,int status);
+    // 帖子删除
 }
